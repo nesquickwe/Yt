@@ -3,67 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube and TikTok Downloader</title>
+    <title>Media Downloader</title>
     <style>
         body {
-            background-color: black;
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            color: white;
-            font-family: Arial, sans-serif;
         }
         .container {
-            background-color: lightgray;
+            background-color: #2e2e2e;
+            border-radius: 20px;
             padding: 20px;
-            border-radius: 10px;
+            width: 300px;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .container h1 {
+            color: #ffffff;
         }
-        input[type=text], select {
+        .container label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        .container input, .container select, .container button {
             width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        input[type=submit] {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin-top: 10px;
+            padding: 10px;
+            margin-bottom: 10px;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            border-radius: 10px;
         }
-        input[type=submit]:hover {
-            background-color: #45a049;
+        .container button {
+            background-color: #6200ea;
+            color: #ffffff;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>YouTube and TikTok Downloader</h1>
-        <form action="/download" method="post">
-            <label for="url">URL:</label>
-            <input type="text" id="url" name="url" placeholder="Enter YouTube or TikTok URL" required><br><br>
+        <h1>Media Downloader</h1>
+        <form id="downloadForm">
+            <label for="url">Media URL:</label>
+            <input type="text" id="url" name="url" required>
+            <label for="platform">Platform:</label>
+            <select id="platform" name="platform">
+                <option value="youtube">YouTube</option>
+                <option value="tiktok">TikTok</option>
+            </select>
             <label for="format">Format:</label>
             <select id="format" name="format">
                 <option value="mp3">MP3 (Audio)</option>
                 <option value="mp4">MP4 (Video)</option>
-            </select><br><br>
-            <input type="submit" value="Download">
+            </select>
+            <button type="button" onclick="downloadMedia()">Download</button>
         </form>
-        <div id="message"></div>
+        <p id="message"></p>
     </div>
+
+    <script>
+        function downloadMedia() {
+            const url = document.getElementById('url').value;
+            const platform = document.getElementById('platform').value;
+            const format = document.getElementById('format').value;
+            const messageElement = document.getElementById('message');
+
+            // Clear the message
+            messageElement.innerText = '';
+
+            if (!url) {
+                messageElement.innerText = 'Please provide a valid URL.';
+                return;
+            }
+
+            let downloadUrl = '';
+
+            if (platform === 'youtube') {
+                downloadUrl = `https://some-youtube-downloader-api.com/download?url=${encodeURIComponent(url)}&format=${format}`;
+            } else if (platform === 'tiktok') {
+                downloadUrl = `https://some-tiktok-downloader-api.com/download?url=${encodeURIComponent(url)}&format=${format}&watermark=false`;
+            }
+
+            if (downloadUrl) {
+                fetch(downloadUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        const downloadLink = document.createElement('a');
+                        downloadLink.href = URL.createObjectURL(blob);
+                        downloadLink.download = `media.${format}`;
+                        downloadLink.click();
+                        messageElement.innerText = 'Download complete!';
+                    })
+                    .catch(error => {
+                        messageElement.innerText = 'Download failed: ' + error.message;
+                    });
+            }
+        }
+    </script>
 </body>
 </html>
