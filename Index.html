@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube and TikTok Downloader</title>
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            background-color: lightgray;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input[type=text], select {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube and TikTok Downloader</h1>
+        <form action="/download" method="post">
+            <label for="url">URL:</label>
+            <input type="text" id="url" name="url" placeholder="Enter YouTube or TikTok URL" required><br><br>
+            <label for="format">Format:</label>
+            <select id="format" name="format">
+                <option value="mp3">MP3 (Audio)</option>
+                <option value="mp4">MP4 (Video)</option>
+            </select><br><br>
+            <input type="submit" value="Download">
+        </form>
+        <div id="message"></div>
+    </div>
+</body>
+</html>
